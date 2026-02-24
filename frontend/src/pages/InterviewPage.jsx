@@ -21,6 +21,7 @@ export default function InterviewPage() {
     try {
       const payload = questions.map((q) => ({
         question_id: q.id,
+        question: q.question,
         answer: answers[q.id] || ""
       }));
       const res = await apiClient.post("/interview/feedback", payload);

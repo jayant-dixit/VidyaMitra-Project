@@ -8,11 +8,11 @@ class Settings(BaseSettings):
     secret_key: str = "CHANGE_THIS_SECRET_KEY_IN_PRODUCTION"
     frontend_origin: str = "http://localhost:5173"
 
-    openai_api_key: Optional[str] = None
+    groq_api_key: Optional[str] = None
+
     google_api_key: Optional[str] = None
     youtube_api_key: Optional[str] = None
     google_cx: Optional[str] = None
-    gemini_api_key: Optional[str] = None
 
     supabase_url: Optional[AnyUrl] = None
     supabase_anon_key: Optional[str] = None

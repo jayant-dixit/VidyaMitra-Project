@@ -7,6 +7,8 @@ class CareerRequest(BaseModel):
     target_role: str
     experience_years: int
     interests: List[str]
+    # Optional plain-text resume content or summary to enrich analysis
+    resume_text: str | None = None
 
 
 class RoadmapStep(BaseModel):

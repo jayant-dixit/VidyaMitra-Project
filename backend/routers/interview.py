@@ -1,9 +1,13 @@
-from typing import List
+from typing import List, Dict
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from pydantic import BaseModel
 
 from .auth import UserInDB, get_current_user
+from services.groq_ai import (
+    generate_interview_questions_with_groq,
+    generate_interview_feedback_with_groq,
+)
 
 
 router = APIRouter()
@@ -17,6 +21,7 @@ class InterviewQuestion(BaseModel):
 
 class InterviewAnswer(BaseModel):
     question_id: int
+    question: str
     answer: str
 
 
@@ -34,28 +39,27 @@ class InterviewSessionFeedback(BaseModel):
     feedback: List[InterviewFeedback]
 
 
-QUESTIONS: list[InterviewQuestion] = [
-    InterviewQuestion(
-        id=1,
-        question="Tell me about yourself and your career goals.",
-        competency="Communication",
-    ),
-    InterviewQuestion(
-        id=2,
-        question="Describe a challenging project and how you handled ambiguity.",
-        competency="Problem Solving",
-    ),
-    InterviewQuestion(
-        id=3,
-        question="Why are you interested in this role and this industry?",
-        competency="Motivation",
-    ),
-]
-
-
 @router.get("/questions", response_model=List[InterviewQuestion])
-def get_questions(current_user: UserInDB = Depends(get_current_user)) -> List[InterviewQuestion]:
-    return QUESTIONS
+def get_questions(
+    target_role: str = Query("Data Scientist", description="Target role for the mock interview."),
+    current_user: UserInDB = Depends(get_current_user),
+) -> List[InterviewQuestion]:
+    raw_questions = generate_interview_questions_with_groq(target_role) or []
+    if not raw_questions:
+        # Minimal fallback if GROQ_API_KEY is not configured
+        raw_questions = [
+            {"question": f"Why are you interested in the {target_role} role?", "competency": "Motivation"}
+        ]
+    result: List[InterviewQuestion] = []
+    for idx, item in enumerate(raw_questions, start=1):
+        result.append(
+            InterviewQuestion(
+                id=idx,
+                question=item.get("question", ""),
+                competency=item.get("competency", "General"),
+            )
+        )
+    return result
 
 
 @router.post("/feedback", response_model=InterviewSessionFeedback)
@@ -63,6 +67,16 @@ def submit_answers(
     answers: List[InterviewAnswer],
     current_user: UserInDB = Depends(get_current_user),
 ) -> InterviewSessionFeedback:
+    qa_pairs: List[Dict[str, str]] = [
+        {"id": ans.question_id, "question": ans.question, "answer": ans.answer} for ans in answers
+    ]
+
+    ai_data = generate_interview_feedback_with_groq(qa_pairs)
+
+    if ai_data and "feedback" in ai_data:
+        return InterviewSessionFeedback(**ai_data)
+
+    # Fallback simple scoring if Groq is not configured
     feedback_items: list[InterviewFeedback] = []
 
     for ans in answers:

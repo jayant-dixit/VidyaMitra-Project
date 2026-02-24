@@ -6,6 +6,7 @@ export default function CareerPage() {
   const [targetRole, setTargetRole] = useState("Data Scientist");
   const [experienceYears, setExperienceYears] = useState(2);
   const [interests, setInterests] = useState("communication, analysis, leadership");
+  const [resumeText, setResumeText] = useState("");
   const [plan, setPlan] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +19,8 @@ export default function CareerPage() {
         current_role: currentRole || "Working professional",
         target_role: targetRole,
         experience_years: Number(experienceYears),
-        interests: interests.split(",").map((s) => s.trim())
+        interests: interests.split(",").map((s) => s.trim()),
+        resume_text: resumeText || null
       });
       setPlan(res.data);
     } catch {
@@ -65,6 +67,15 @@ export default function CareerPage() {
           <input
             value={interests}
             onChange={(e) => setInterests(e.target.value)}
+          />
+        </div>
+        <div className="field">
+          <label>Paste your resume or profile summary (optional but recommended)</label>
+          <textarea
+            rows={5}
+            value={resumeText}
+            onChange={(e) => setResumeText(e.target.value)}
+            placeholder="Paste key sections from your resume to get a more accurate, personalized roadmap."
           />
         </div>
         <button className="btn-primary" type="submit" disabled={loading}>

@@ -1,8 +1,15 @@
-import google.generativeai as genai
+import requests
+import os
 
-genai.configure(api_key="AIzaSyA1HK1yyPkZ1psx6nMdzzIwi9ZReksQfOo")
+api_key = "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"
+print(api_key)
+url = "https://api.groq.com/openai/v1/models"
 
-for m in genai.list_models():
-    print(m.name)
-    print(m.supported_generation_methods)
-    print(m.supported_generation_methods)
+headers = {
+    "Authorization": f"Bearer {api_key}",
+    "Content-Type": "application/json"
+}
+
+response = requests.get(url, headers=headers)
+
+print(response.json())
