@@ -17,3 +17,6 @@ groq
 
 pypdf
 python-docx
+
+certifi 
+urllib3

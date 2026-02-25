@@ -63,7 +63,7 @@ async def get_learning_resources(
 
 async def _gather_resources(topic: str):
     videos = await fetch_youtube_videos(topic)
-    articles = await fetch_google_results(topic)
+    articles = []
     visuals = await fetch_pexels_images(topic)
     news_items = await fetch_news(topic)
     market = await fetch_exchange_rates()

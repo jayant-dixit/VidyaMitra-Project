@@ -8,6 +8,8 @@ from passlib.context import CryptContext
 from pydantic import BaseModel, EmailStr
 
 from core.supabase import supabase
+from core.config import settings
+import os
 
 SECRET_KEY = "CHANGE_THIS_SECRET_KEY_IN_PRODUCTION"
 ALGORITHM = "HS256"
@@ -144,6 +146,9 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> UserInDB:
 
 @router.post("/register", response_model=User, status_code=status.HTTP_201_CREATED)
 def register(user_in: UserCreate) -> User:
+
+    # print("supabase url ", supabase)
+
 
     if get_user_by_email(user_in.email):
         raise HTTPException(

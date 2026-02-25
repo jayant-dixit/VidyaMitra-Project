@@ -1,7 +1,8 @@
+import core.ssl_fix
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from routers import auth, resume, interview, career, learning
+from routers import auth, resume, interview, career, learning, profile
 from core.config import settings
 
 
@@ -28,6 +29,7 @@ app.add_middleware(
 )
 
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(profile.router, prefix="/api/profile", tags=["profile"])
 app.include_router(resume.router, prefix="/api/resume", tags=["resume"])
 app.include_router(interview.router, prefix="/api/interview", tags=["interview"])
 app.include_router(career.router, prefix="/api/career", tags=["career"])

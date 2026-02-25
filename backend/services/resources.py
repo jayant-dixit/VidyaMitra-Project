@@ -56,8 +56,9 @@ async def fetch_google_results(query: str, max_results: int = 5) -> List[dict]:
     # For demo we read it from GOOGLE_CX if present.
     import os
 
-    cx = os.getenv("GOOGLE_CX")
+    cx = settings.google_cx
     if not cx:
+        print("Google Custom Search Engine ID is not set")
         return []
 
     url = "https://www.googleapis.com/customsearch/v1"

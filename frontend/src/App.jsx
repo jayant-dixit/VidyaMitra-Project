@@ -6,6 +6,7 @@ import ResumePage from "./pages/ResumePage.jsx";
 import InterviewPage from "./pages/InterviewPage.jsx";
 import CareerPage from "./pages/CareerPage.jsx";
 import TrainingPage from "./pages/TrainingPage.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
 import AuthPage from "./pages/AuthPage.jsx";
 
 function PrivateRoute({ children }) {
@@ -38,6 +39,9 @@ function Shell() {
               </Link>
               <Link to="/resume" className="nav-link">
                 Resume Insights
+              </Link>
+              <Link to="/profile" className="nav-link">
+                Profile
               </Link>
               <Link to="/interview" className="nav-link">
                 Mock Interview
@@ -110,6 +114,14 @@ function Shell() {
             element={
               <PrivateRoute>
                 <TrainingPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <ProfilePage />
               </PrivateRoute>
             }
           />

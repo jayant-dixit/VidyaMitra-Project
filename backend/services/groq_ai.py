@@ -57,6 +57,7 @@ def trim_resume(text: str) -> str:
 def analyze_resume_with_groq(resume_text: str) -> dict:
     resume_text = trim_resume(resume_text)
 
+    print("resume_text", resume_text)
     prompt = f"""
 You are a career advisor AI.
 

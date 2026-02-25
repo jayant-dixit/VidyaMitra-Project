@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     supabase_url: Optional[AnyUrl] = None
     supabase_anon_key: Optional[str] = None
     supabase_key: Optional[str] = None
+    supabase_service_role_key: Optional[str] = None
 
     pexels_api_key: Optional[str] = None
     news_api_key: Optional[str] = None

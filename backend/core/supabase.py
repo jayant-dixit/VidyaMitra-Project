@@ -3,5 +3,5 @@ from core.config import settings
 
 supabase = create_client(
     str(settings.supabase_url),
-    str(settings.supabase_key)
+    str(settings.supabase_service_role_key)
 )
