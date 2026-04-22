@@ -47,7 +47,7 @@ function Shell() {
                 Mock Interview
               </Link>
               <Link to="/career" className="nav-link">
-                Career Path
+                Career Paths
               </Link>
               <Link to="/training" className="nav-link">
                 Skills & Training
